@@ -6,17 +6,39 @@ import _ from 'lodash';
 const properNounReplaceContainer = () => {
 
 	const tallyWords = () => {
+		const scrabbleDictionary = ospd();
 		const userTextArea = document.getElementById("userTextArea") as HTMLTextAreaElement;
-		console.log('got here')
+
+		// Tallying removed for now
+		// Tally the total number of 
+		// const talliedWords = _.countBy(words, _.identity);
+
 		if (userTextArea) {
-			console.log("tallyWords -> userTextArea", userTextArea)
-			const words = userTextArea.value.split(/\s+/);
-			let talliedWords = _.countBy(words, _.identity);
-			console.log(talliedWords);
-			let excludedWords = _.intersectionWith(Object.keys(talliedWords), ospd, _.isEqual);
-			let includedWords = _.differenceWith(Object.keys(talliedWords), ospd, _.isEqual);
-			console.log('presents', excludedWords);
-			console.log('dif', includedWords);
+			// Split all user text into an array when hitting white space and line breaks.
+			const allWords = userTextArea.value.split(/\s+/);
+			// Add context to the words by getting surrounding words
+			let allWordsWithContext = allWords.map((word, i) => {
+				const contextString =
+					_.join(allWords.slice(i > 3 ? i - 3 : i, i < allWords.length - 4 ? i + 4 : i + 1), ' ');
+				return { [word]: contextString }
+			});
+			console.log('all words', allWordsWithContext);
+			// Clean and standardize words
+			let allCleanedWords: any[] = allWordsWithContext.map(wordWithContext => {
+				// Test if word only contains a number
+				if (!/^\d+$/.test(Object.keys(wordWithContext)[0])) {
+					// Rename keys to uppercase and without punctuation
+					return { [(Object.keys(wordWithContext)[0]).replace(/[^\w\s]/g, "").toUpperCase()]: Object.values(wordWithContext)[0] }
+				}
+			})
+			console.log("tallyWords -> allWordKeys", allCleanedWords)
+			// // Remove duplicate words.
+			// wordsToCompare = _.uniq(wordsToCompare);
+			// // Exclude words that are in the OSPD. Include uncommon words, such as proper nouns.
+			// let excludedWords = _.intersectionWith(wordsToCompare, scrabbleDictionary, _.isEqual);
+			// let includedWords = _.differenceWith(wordsToCompare, scrabbleDictionary, _.isEqual);
+			// console.log('presents', excludedWords);
+			// console.log('dif', includedWords);
 		}
 	}
 

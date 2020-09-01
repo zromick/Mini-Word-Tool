@@ -36,7 +36,7 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 				<p>Users can also keep track of their changes by exporting/importing words and their replacements.</p>
 				<p>The basic flow is as such:</p>
 				<ol>
-					<li>Paste your text and see word count frequency get tallied automatically</li>
+					<li>Paste your text</li>
 					<li>Decide which words will be replaced</li>
 					<li>Write replacement words for each included word</li>
 					<li>Replace the entire text with replacement words</li>
