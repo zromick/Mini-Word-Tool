@@ -26,8 +26,14 @@ const ProperNounReplaceContainer = () => {
 			const allWords = userTextArea.value.split(/\s+/);
 			// Add context to the words by getting surrounding words
 			let allWordsWithContext = allWords.map((word, i) => {
-				const contextString =
+				let contextString =
 					_.join(allWords.slice(i > 3 ? i - 3 : i, i < allWords.length - 4 ? i + 4 : i + 1), ' ');
+				let wordLocation = contextString.indexOf(word);
+				// Bold the main word
+				contextString =
+					contextString.substr(0, wordLocation)
+					+ `<b>${contextString.substring(wordLocation, wordLocation + word.length)}</b>`
+					+ contextString.substring(wordLocation + word.length)
 				return { [word]: contextString }
 			});
 			console.log('all words', allWordsWithContext);
