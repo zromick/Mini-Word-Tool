@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ProperNounReplace from './properNounReplace';
 import { ospd } from './ospd'; // Official Scrabble Player's Dictionary
 import _ from 'lodash';
 import $ from 'jquery';
 
-const properNounReplaceContainer = () => {
+const ProperNounReplaceContainer = () => {
 
+	const [excludedWords, updateExcludedWords] = useState([] as { [x: string]: string }[]);
+	const [includedWords, updateIncludedWords] = useState([] as { [x: string]: string }[]);
 	// Paste text and sort words into "Excluded" or "Included"
 	const sortWords = () => {
-		let excludedWords: any[] = [];
-		let includedWords: any[] = [];
+		let excludedWords: { [x: string]: string; }[] = [];
+		let includedWords: { [x: string]: string; }[] = [];
 		// const excludedWordsElement = document.getElementById("excludedWords") as HTMLInputElement;
 		// const includedWordsElement = document.getElementById("includedWords") as HTMLInputElement;
 		const userTextArea = document.getElementById("userTextArea") as HTMLTextAreaElement;
@@ -38,12 +40,10 @@ const properNounReplaceContainer = () => {
 					const newKey = (Object.keys(wordWithContext)[0]).replace(/[^\w\s]/g, "").toUpperCase();
 					if (scrabbleDictionary.indexOf(newKey) !== -1) {
 						// excludedWords = _.unionBy(excludedWords, newKey); // Attempt to remove dupes
-						$("#excludedWords").append(`<p>${newKey}&#9;<button>yell</button></p>`);
 						excludedWords.push({ [newKey]: Object.values(wordWithContext)[0] });
 
 					} else {
 						// includedWords = _.unionBy(includedWords, newKey); // Attempt to remove dupes
-						$("#includedWords").append(`<p>${newKey}&#9;<button>yell</button></p>`);
 						includedWords.push({ [newKey]: Object.values(wordWithContext)[0] });
 					}
 				}
@@ -53,6 +53,8 @@ const properNounReplaceContainer = () => {
 			// wordsToCompare = _.uniq(wordsToCompare);
 			console.log('presents', excludedWords);
 			console.log('dif', includedWords);
+			updateExcludedWords(excludedWords);
+			updateIncludedWords(includedWords);
 		}
 	}
 
@@ -104,8 +106,10 @@ const properNounReplaceContainer = () => {
 			sortAlphabetically={sortAlphabetically}
 			exportWords={exportWords}
 			replaceAllIncludedWords={replaceAllIncludedWords}
+			excludedWords={excludedWords}
+			includedWords={includedWords}
 		/>
 	);
 }
 
-export default properNounReplaceContainer;
+export default ProperNounReplaceContainer;

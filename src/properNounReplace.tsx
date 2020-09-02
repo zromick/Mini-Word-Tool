@@ -1,4 +1,5 @@
 import React from 'react';
+import WordsWithContext from './wordsWithContext';
 
 export interface ProperNounReplaceProps {
 	toggleHideSection: (id: string) => any,
@@ -8,6 +9,8 @@ export interface ProperNounReplaceProps {
 	sortAlphabetically: () => any,
 	exportWords: () => any,
 	replaceAllIncludedWords: () => any,
+	excludedWords: { [x: string]: string; }[],
+	includedWords: { [x: string]: string; }[],
 }
 
 const ProperNounReplace = (props: ProperNounReplaceProps) => {
@@ -18,7 +21,9 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 		sortByFrequency,
 		sortAlphabetically,
 		exportWords,
-		replaceAllIncludedWords
+		replaceAllIncludedWords,
+		excludedWords,
+		includedWords,
 	} = props;
 	// h3 class="panel-title"
 	return (
@@ -90,10 +95,10 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 				<button id="frequencySort" onClick={() => sortAlphabetically()}>Sort Alphabetically</button>
 				<h4>Excluded Words</h4>
 				<p>Click the "Include" button next to a word to add it to the bottom of the "Included Words" list.</p>
-				<p id="excludedWords"></p>
+				<WordsWithContext words={excludedWords} wordsAreExcluded={true} />
 				<h4>Included Words</h4>
 				<p>Click the "Exclude" button next to a word to add it to the bottom of the "Excluded Words" list.</p>
-				<p id="includedWords"></p>
+				<WordsWithContext words={includedWords} wordsAreExcluded={false} />
 				<p>Click "Export" to export excluded/included Words (copy to clipboard).</p>
 				<p>This should be saved "as is" and used in the import area above.</p>
 				<button id="frequencySort" onClick={() => exportWords()}>Export</button>
