@@ -2,12 +2,18 @@ import React from 'react';
 import ProperNounReplace from './properNounReplace';
 import { ospd } from './ospd'; // Official Scrabble Player's Dictionary
 import _ from 'lodash';
+import $ from 'jquery';
 
 const properNounReplaceContainer = () => {
 
-	const tallyWords = () => {
-		const scrabbleDictionary = ospd();
+	// Paste text and sort words into "Excluded" or "Included"
+	const sortWords = () => {
+		let excludedWords: any[] = [];
+		let includedWords: any[] = [];
+		// const excludedWordsElement = document.getElementById("excludedWords") as HTMLInputElement;
+		// const includedWordsElement = document.getElementById("includedWords") as HTMLInputElement;
 		const userTextArea = document.getElementById("userTextArea") as HTMLTextAreaElement;
+		const scrabbleDictionary = ospd();
 
 		// Tallying removed for now
 		// Tally the total number of 
@@ -23,22 +29,30 @@ const properNounReplaceContainer = () => {
 				return { [word]: contextString }
 			});
 			console.log('all words', allWordsWithContext);
-			// Clean and standardize words
-			let allCleanedWords: any[] = allWordsWithContext.map(wordWithContext => {
+			// Clean and standardize words and then see if they are in OSPD.
+			// If the word is in the OSPD, exclude the word.
+			allWordsWithContext.map(wordWithContext => {
 				// Test if word only contains a number
 				if (!/^\d+$/.test(Object.keys(wordWithContext)[0])) {
 					// Rename keys to uppercase and without punctuation
-					return { [(Object.keys(wordWithContext)[0]).replace(/[^\w\s]/g, "").toUpperCase()]: Object.values(wordWithContext)[0] }
+					const newKey = (Object.keys(wordWithContext)[0]).replace(/[^\w\s]/g, "").toUpperCase();
+					if (scrabbleDictionary.indexOf(newKey) !== -1) {
+						// excludedWords = _.unionBy(excludedWords, newKey); // Attempt to remove dupes
+						$("#excludedWords").append(`<p>${newKey}&#9;<button>yell</button></p>`);
+						excludedWords.push({ [newKey]: Object.values(wordWithContext)[0] });
+
+					} else {
+						// includedWords = _.unionBy(includedWords, newKey); // Attempt to remove dupes
+						$("#includedWords").append(`<p>${newKey}&#9;<button>yell</button></p>`);
+						includedWords.push({ [newKey]: Object.values(wordWithContext)[0] });
+					}
 				}
+				return null;
 			})
-			console.log("tallyWords -> allWordKeys", allCleanedWords)
 			// // Remove duplicate words.
 			// wordsToCompare = _.uniq(wordsToCompare);
-			// // Exclude words that are in the OSPD. Include uncommon words, such as proper nouns.
-			// let excludedWords = _.intersectionWith(wordsToCompare, scrabbleDictionary, _.isEqual);
-			// let includedWords = _.differenceWith(wordsToCompare, scrabbleDictionary, _.isEqual);
-			// console.log('presents', excludedWords);
-			// console.log('dif', includedWords);
+			console.log('presents', excludedWords);
+			console.log('dif', includedWords);
 		}
 	}
 
@@ -53,19 +67,19 @@ const properNounReplaceContainer = () => {
 	}
 
 	const handleImport = () => {
-
+		// Todo
 	}
 
 	const sortByFrequency = () => {
-
+		// Todo
 	}
 
 	const sortAlphabetically = () => {
-
+		// Todo
 	}
 
 	const exportWords = () => {
-
+		// Todo
 	}
 
 	const replaceAllIncludedWords = () => {
@@ -84,7 +98,7 @@ const properNounReplaceContainer = () => {
 	return (
 		<ProperNounReplace
 			toggleHideSection={toggleHideSection}
-			tallyWords={tallyWords}
+			sortWords={sortWords}
 			handleImport={handleImport}
 			sortByFrequency={sortByFrequency}
 			sortAlphabetically={sortAlphabetically}

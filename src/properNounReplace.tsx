@@ -2,7 +2,7 @@ import React from 'react';
 
 export interface ProperNounReplaceProps {
 	toggleHideSection: (id: string) => any,
-	tallyWords: () => any,
+	sortWords: () => any,
 	handleImport: () => any,
 	sortByFrequency: () => any,
 	sortAlphabetically: () => any,
@@ -13,7 +13,7 @@ export interface ProperNounReplaceProps {
 const ProperNounReplace = (props: ProperNounReplaceProps) => {
 	const {
 		toggleHideSection,
-		tallyWords,
+		sortWords,
 		handleImport,
 		sortByFrequency,
 		sortAlphabetically,
@@ -54,7 +54,7 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 					<p>Muhammad's. (1)s. Replace with: T. K.'s.</p>
 				</ul>
 				<p>Output Text: </p>
-				<p>Charles's friend, Julia, greeted T.K. and asked him about the milk.</p>
+				<p>Charles's friend, Julia, greeted T. K. and asked him about the milk.</p>
 				<p>She suspected the milk belonged to T. K.</p>
 				<p>The milk was T. K.'s.</p>
 			</div>
@@ -66,7 +66,7 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 				<p>Once pasted, word count frequency will be calculated.</p>
 				<p>Common English words will be placed into an Excluded Words section to keep things clean.</p>
 				<p>Everything else will be placed into the Included Words section.</p>
-				<textarea id="userTextArea" cols={40} rows={5} onInput={() => tallyWords()}></textarea>
+				<textarea id="userTextArea" cols={40} rows={5} onChange={() => sortWords()}></textarea>
 			</div>
 
 			<h3>Step 2: Import
@@ -76,7 +76,7 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 				<p>You can import previously exported excluded/included words by pasting the export in the text area.</p>
 				<p>Words that have no replacement word will be excluded.</p>
 				<p>Words that have a semicolon and replacement word will be included.</p>
-				<textarea id="importTextArea" cols={40} rows={5} onInput={() => handleImport()}></textarea>
+				<textarea id="importTextArea" cols={40} rows={5} onChange={() => handleImport()}></textarea>
 				<br />
 			</div>
 
