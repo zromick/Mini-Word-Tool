@@ -1,9 +1,10 @@
 import React from 'react';
 import { Grid, Tooltip } from '@material-ui/core';
+import { WordWithContextModel } from './models';
 import styles from './properNounReplace.scss';
 
 export interface WordsWithContextProps {
-  words: { [x: string]: string; }[],
+  words: WordWithContextModel[],
   wordsAreExcluded: boolean,
 }
 
@@ -15,7 +16,13 @@ const WordsWithContext = (props: WordsWithContextProps) => {
     let maxWordLength = 15;
     let maxButtonWordLength = 8;
     let wordString: string = Object.keys(word)[0];
-    let contextString: string = Object.values(word)[0];
+    let contextString: string = Object.values(word)[0].contextString;
+    let wordLocation: number = Object.values(word)[0].wordLocation;
+    let wordLength: number = Object.values(word)[0].wordLength;
+    let beginningContext = contextString.substr(0, wordLocation);
+    let wordWithinContext = contextString.substring(wordLocation, wordLocation + wordLength);
+    let endingContext = contextString.substring(wordLocation + wordLength);
+
     wordList.push(
       <Grid container key={`Key${word}${index}`}>
         <Grid item xs={3}>
@@ -29,7 +36,13 @@ const WordsWithContext = (props: WordsWithContextProps) => {
           }
         </Grid>
         <Grid item xs={6} className={styles.wordBreak}>
-          {contextString}
+          <div>
+            {beginningContext}
+            <b>
+              {wordWithinContext}
+            </b>
+            {endingContext}
+          </div>
         </Grid>
         <Grid item xs={3}>
           <button>

@@ -1,5 +1,6 @@
 import React from 'react';
 import WordsWithContext from './wordsWithContext';
+import { WordWithContextModel } from './models';
 
 export interface ProperNounReplaceProps {
 	toggleHideSection: (id: string) => any,
@@ -9,8 +10,8 @@ export interface ProperNounReplaceProps {
 	sortAlphabetically: () => any,
 	exportWords: () => any,
 	replaceAllIncludedWords: () => any,
-	excludedWords: { [x: string]: string; }[],
-	includedWords: { [x: string]: string; }[],
+	excludedWords: WordWithContextModel[],
+	includedWords: WordWithContextModel[],
 }
 
 const ProperNounReplace = (props: ProperNounReplaceProps) => {
@@ -31,7 +32,7 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 			<h3>Minimalistic Word Frequency Counter and Proper Noun Replacement Tool</h3>
 			<p>By <a href="https://github.com/zromick">Zac Romick</a></p>
 			<p>Created on August 21, 2020</p>
-			<p>Last Updated on September 1, 2020</p>
+			<p>Last Updated in September 2020</p>
 
 			<h3>Introduction
 			<img src="./dropdown.svg" alt="A clickable dropdown arrow" width={10} height={10} onClick={() => toggleHideSection('introductionBody')} />

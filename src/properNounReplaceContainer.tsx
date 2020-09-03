@@ -3,15 +3,16 @@ import ProperNounReplace from './properNounReplace';
 import { ospd } from './ospd'; // Official Scrabble Player's Dictionary
 import _ from 'lodash';
 import $ from 'jquery';
+import { WordWithContextModel } from './models';
 
 const ProperNounReplaceContainer = () => {
 
-	const [excludedWords, updateExcludedWords] = useState([] as { [x: string]: string }[]);
-	const [includedWords, updateIncludedWords] = useState([] as { [x: string]: string }[]);
+	const [excludedWords, updateExcludedWords] = useState([] as WordWithContextModel[]);
+	const [includedWords, updateIncludedWords] = useState([] as WordWithContextModel[]);
 	// Paste text and sort words into "Excluded" or "Included"
 	const sortWords = () => {
-		let excludedWords: { [x: string]: string; }[] = [];
-		let includedWords: { [x: string]: string; }[] = [];
+		let excludedWords: WordWithContextModel[] = [];
+		let includedWords: WordWithContextModel[] = [];
 		// const excludedWordsElement = document.getElementById("excludedWords") as HTMLInputElement;
 		// const includedWordsElement = document.getElementById("includedWords") as HTMLInputElement;
 		const userTextArea = document.getElementById("userTextArea") as HTMLTextAreaElement;
@@ -25,16 +26,12 @@ const ProperNounReplaceContainer = () => {
 			// Split all user text into an array when hitting white space and line breaks.
 			const allWords = userTextArea.value.split(/\s+/);
 			// Add context to the words by getting surrounding words
-			let allWordsWithContext = allWords.map((word, i) => {
-				let contextString =
+			const allWordsWithContext = allWords.map((word, i) => {
+				const contextString =
 					_.join(allWords.slice(i > 3 ? i - 3 : i, i < allWords.length - 4 ? i + 4 : i + 1), ' ');
-				let wordLocation = contextString.indexOf(word);
-				// Bold the main word
-				contextString =
-					contextString.substr(0, wordLocation)
-					+ `<b>${contextString.substring(wordLocation, wordLocation + word.length)}</b>`
-					+ contextString.substring(wordLocation + word.length)
-				return { [word]: contextString }
+				const wordLocation = contextString.indexOf(word);
+				const wordLength = word.length;
+				return { [word]: { contextString, wordLocation, wordLength } }
 			});
 			console.log('all words', allWordsWithContext);
 			// Clean and standardize words and then see if they are in OSPD.
