@@ -19,8 +19,8 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 		toggleHideSection,
 		sortWords,
 		handleImport,
-		sortByFrequency,
-		sortAlphabetically,
+		// sortByFrequency,
+		// sortAlphabetically,
 		exportWords,
 		replaceAllIncludedWords,
 		excludedWords,
@@ -31,6 +31,7 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 		<div>
 			<h3>Minimalistic Word Frequency Counter and Proper Noun Replacement Tool</h3>
 			<p>By <a href="https://github.com/zromick">Zac Romick</a></p>
+			<p>Suggestions? Please send me an email: <a href="mailto:zachary.romick@vanderbilt.edu">zachary.romick@vanderbilt.edu</a></p>
 			<p>Created on August 21, 2020</p>
 			<p>Last Updated in September 2020</p>
 
@@ -74,9 +75,9 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 			<img src="./dropdown.svg" alt="A clickable dropdown arrow" width={10} height={10} onClick={() => toggleHideSection('pasteTextBody')} />
 			</h3>
 			<div id='pasteTextBody'>
-				<p>Once pasted, word count frequency will be calculated.</p>
+				{/* <p>Once pasted, word count frequency will be calculated.</p>
 				<p>Common English words will be placed into an Excluded Words section to keep things clean.</p>
-				<p>Everything else will be placed into the Included Words section.</p>
+				<p>Everything else will be placed into the Included Words section.</p> */}
 				<textarea id="userTextArea" cols={40} rows={8} onChange={() => sortWords()}></textarea>
 				<h4 onClick={() => toggleHideSection('importBody')}>Optional: Import
 				<img src="./dropdown.svg" alt="A clickable dropdown arrow" width={10} height={10} onClick={() => toggleHideSection('importBody')} />
@@ -109,9 +110,9 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 				<img src="./dropdown.svg" alt="A clickable dropdown arrow" width={10} height={10} onClick={() => toggleHideSection('includedWordsBody')} />
 				</h4>
 				<div id='includedWordsBody'>
-					<p>Click the "Exclude" button next to a word to add it to the bottom of the "Excluded Words" list.</p>
+					{/* <p>Click the "Exclude" button next to a word to add it to the bottom of the "Excluded Words" list.</p>
 					<p>Click "Export" to export excluded/included Words (copy to clipboard).</p>
-					<p>This should be saved "as is" and used in the import area above.</p>
+					<p>This should be saved "as is" and used in the import area above.</p> */}
 					<button id="frequencySort" onClick={() => exportWords()}>Export</button>
 					<br />
 					<br />
@@ -123,8 +124,8 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 			<img src="./dropdown.svg" alt="A clickable dropdown arrow" width={10} height={10} onClick={() => toggleHideSection('generateNewTextBody')} />
 			</h3>
 			<div id='generateNewTextBody'>
-				<p>Click "Replace All" to generate new text.</p>
-				<p>The included words will be replaced and new text will be copied to your clipboard.</p>
+				{/* <p>Click "Replace All" to generate new text.</p>
+				<p>The included words will be replaced and new text will be copied to your clipboard.</p> */}
 				<button id="replaceAll" onClick={() => replaceAllIncludedWords()}>Replace All</button>
 				<br />
 				<br />

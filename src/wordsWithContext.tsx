@@ -14,7 +14,7 @@ const WordsWithContext = (props: WordsWithContextProps) => {
 
   words.map((word, index) => {
     let maxWordLength = 15;
-    let maxButtonWordLength = 8;
+    let maxButtonWordLength = 7;
     let wordString: string = Object.keys(word)[0];
     let contextString: string = Object.values(word)[0].contextString;
     let wordLocation: number = Object.values(word)[0].wordLocation;

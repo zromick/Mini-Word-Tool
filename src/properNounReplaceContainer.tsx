@@ -30,7 +30,7 @@ const ProperNounReplaceContainer = () => {
 			// Add context to the words by getting surrounding words
 			const allWordsWithContext = allWords.map((word, i) => {
 				const contextString =
-					_.join(allWords.slice(i > 3 ? i - 3 : i, i < allWords.length - 4 ? i + 4 : i + 1), ' ');
+					_.join(allWords.slice(i > 3 ? i - 3 : 0, i < allWords.length - 4 ? i + 4 : allWords.length), ' ');
 				const wordLocation = contextString.indexOf(word);
 				const wordLength = word.length;
 				return { [word]: { contextString, wordLocation, wordLength } }
