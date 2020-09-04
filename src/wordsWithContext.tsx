@@ -1,7 +1,7 @@
 import React from 'react';
-import { Grid, Tooltip } from '@material-ui/core';
+import { Grid, Tooltip, Typography } from '@material-ui/core';
 import { WordWithContextModel } from './models';
-import styles from './properNounReplace.scss';
+// import styles from './properNounReplace.scss';
 
 export interface WordsWithContextProps {
   words: WordWithContextModel[],
@@ -35,14 +35,10 @@ const WordsWithContext = (props: WordsWithContextProps) => {
             : <div>{wordString}</div>
           }
         </Grid>
-        <Grid item xs={6} className={styles.wordBreak}>
-          <div>
-            {beginningContext}
-            <b>
-              {wordWithinContext}
-            </b>
-            {endingContext}
-          </div>
+        <Grid item xs={6}>
+          <Typography style={{ wordBreak: 'break-all' }}>
+            {beginningContext}<b>{wordWithinContext}</b>{endingContext}
+          </Typography>
         </Grid>
         <Grid item xs={3}>
           <button>

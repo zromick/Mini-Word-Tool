@@ -34,78 +34,92 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 			<p>Created on August 21, 2020</p>
 			<p>Last Updated in September 2020</p>
 
-			<h3>Introduction
+			<h3 onClick={() => toggleHideSection('introductionBody')}>Introduction
 			<img src="./dropdown.svg" alt="A clickable dropdown arrow" width={10} height={10} onClick={() => toggleHideSection('introductionBody')} />
 			</h3>
-			<div id="introductionBody">
+			<div id="introductionBody" style={{ display: "none" }}>
 				<p>This application was created to help writers replace multiple proper nouns at once.</p>
 				<p>Users can also keep track of their changes by exporting/importing words and their replacements.</p>
 				<p>The basic flow is as such:</p>
 				<ol>
 					<li>Paste your text</li>
-					<li>Decide which words will be replaced</li>
+					<li>Choose whether to include or exclude words</li>
+					<li>Decide which words will be replaced (included words)</li>
 					<li>Write replacement words for each included word</li>
 					<li>Replace the entire text with replacement words</li>
 				</ol>
-				<p>Example:</p>
-				<p>Input Text: </p>
-				<p>Jeremiah's friend, Sarah, greeted Muhammad and asked him about the milk.</p>
-				<p>Julia suspected the milk belonged to Muhammad.</p>
-				<p>The milk was Muhammad's.</p>
-				<ul>
-					<p>Jeremiah's (1). Replace with: Charles'</p>
-					<p>Sarah (1). Replace with: Julia</p>
-					<p>Sarah, (1). Replace with: Julia,</p>
-					<p>Muhammad. (1). Replace with: T. K.</p>
-					<p>Muhammad's. (1)s. Replace with: T. K.'s.</p>
-				</ul>
-				<p>Output Text: </p>
-				<p>Charles's friend, Julia, greeted T. K. and asked him about the milk.</p>
-				<p>She suspected the milk belonged to T. K.</p>
-				<p>The milk was T. K.'s.</p>
+				<h4 onClick={() => toggleHideSection('introExampleBody')}>Example
+				<img src="./dropdown.svg" alt="A clickable dropdown arrow" width={10} height={10} onClick={() => toggleHideSection('introExampleBody')} />
+				</h4>
+				<div id="introExampleBody" style={{ display: "none" }}>
+					<p>Input Text: </p>
+					<p>Jeremiah's friend, Sarah, greeted Muhammad and asked him about the milk.</p>
+					<p>Julia suspected the milk belonged to Muhammad.</p>
+					<p>The milk was Muhammad's.</p>
+					<ul>
+						<p>Jeremiah's (1). Replace with: Charles'</p>
+						<p>Sarah (1). Replace with: Julia</p>
+						<p>Sarah, (1). Replace with: Julia,</p>
+						<p>Muhammad. (1). Replace with: T. K.</p>
+						<p>Muhammad's. (1)s. Replace with: T. K.'s.</p>
+					</ul>
+					<p>Output Text: </p>
+					<p>Charles's friend, Julia, greeted T. K. and asked him about the milk.</p>
+					<p>She suspected the milk belonged to T. K.</p>
+					<p>The milk was T. K.'s.</p>
+				</div>
 			</div>
 
-			<h3>Step 1: Paste Text Here
+			<h3 onClick={() => toggleHideSection('pasteTextBody')}>Step 1: Paste Text Here
 			<img src="./dropdown.svg" alt="A clickable dropdown arrow" width={10} height={10} onClick={() => toggleHideSection('pasteTextBody')} />
 			</h3>
 			<div id='pasteTextBody'>
 				<p>Once pasted, word count frequency will be calculated.</p>
 				<p>Common English words will be placed into an Excluded Words section to keep things clean.</p>
 				<p>Everything else will be placed into the Included Words section.</p>
-				<textarea id="userTextArea" cols={40} rows={5} onChange={() => sortWords()}></textarea>
+				<textarea id="userTextArea" cols={40} rows={8} onChange={() => sortWords()}></textarea>
+				<h4 onClick={() => toggleHideSection('importBody')}>Optional: Import
+				<img src="./dropdown.svg" alt="A clickable dropdown arrow" width={10} height={10} onClick={() => toggleHideSection('importBody')} />
+				</h4>
+				<div id='importBody' style={{ display: "none" }}>
+					{/* <p>You can import previously exported excluded/included words by pasting the export in the text area.</p>
+					<p>Words that have no replacement word will be excluded.</p>
+					<p>Words that have a semicolon and replacement word will be included.</p> */}
+					<textarea id="importTextArea" cols={40} rows={4} onChange={() => handleImport()}></textarea>
+					<br />
+				</div>
 			</div>
 
-			<h3>Step 2: Import
-			<img src="./dropdown.svg" alt="A clickable dropdown arrow" width={10} height={10} onClick={() => toggleHideSection('importBody')} />
-			</h3>
-			<div id='importBody'>
-				<p>You can import previously exported excluded/included words by pasting the export in the text area.</p>
-				<p>Words that have no replacement word will be excluded.</p>
-				<p>Words that have a semicolon and replacement word will be included.</p>
-				<textarea id="importTextArea" cols={40} rows={5} onChange={() => handleImport()}></textarea>
-				<br />
-			</div>
-
-			<h3>Step 3: Manage Your Words
+			<h3 onClick={() => toggleHideSection('wordManagerBody')}>Step 2: Manage Your Words
 			<img src="./dropdown.svg" alt="A clickable dropdown arrow" width={10} height={10} onClick={() => toggleHideSection('wordManagerBody')} />
 			</h3>
 			<div id='wordManagerBody'>
-				<p>Excluded words will not be replaced. The default functionality is to exclude common English words.</p>
+				{/* <p>Excluded words will not be replaced. The default functionality is to exclude common English words.</p>
 				<p>Included words are words to replace with new words.</p>
 				<button id="frequencySort" onClick={() => sortByFrequency()}>Sort by Frequency</button>
-				<button id="frequencySort" onClick={() => sortAlphabetically()}>Sort Alphabetically</button>
-				<h4>Excluded Words</h4>
-				<p>Click the "Include" button next to a word to add it to the bottom of the "Included Words" list.</p>
-				<WordsWithContext words={excludedWords} wordsAreExcluded={true} />
-				<h4>Included Words</h4>
-				<p>Click the "Exclude" button next to a word to add it to the bottom of the "Excluded Words" list.</p>
-				<WordsWithContext words={includedWords} wordsAreExcluded={false} />
-				<p>Click "Export" to export excluded/included Words (copy to clipboard).</p>
-				<p>This should be saved "as is" and used in the import area above.</p>
-				<button id="frequencySort" onClick={() => exportWords()}>Export</button>
+				<button id="frequencySort" onClick={() => sortAlphabetically()}>Sort Alphabetically</button> */}
+				<h4 onClick={() => toggleHideSection('excludedWordsBody')}>Words Excluded From Replacement
+				<img src="./dropdown.svg" alt="A clickable dropdown arrow" width={10} height={10} onClick={() => toggleHideSection('excludedWordsBody')} />
+				</h4>
+				<div id='excludedWordsBody'>
+					<p>Click the "Include" button next to a word to add it to the bottom of the "Included Words" list.</p>
+					<WordsWithContext words={excludedWords} wordsAreExcluded={true} />
+				</div>
+				<h4 onClick={() => toggleHideSection('includedWordsBody')}>Words Included in Replacement
+				<img src="./dropdown.svg" alt="A clickable dropdown arrow" width={10} height={10} onClick={() => toggleHideSection('includedWordsBody')} />
+				</h4>
+				<div id='includedWordsBody'>
+					<p>Click the "Exclude" button next to a word to add it to the bottom of the "Excluded Words" list.</p>
+					<p>Click "Export" to export excluded/included Words (copy to clipboard).</p>
+					<p>This should be saved "as is" and used in the import area above.</p>
+					<button id="frequencySort" onClick={() => exportWords()}>Export</button>
+					<br />
+					<br />
+					<WordsWithContext words={includedWords} wordsAreExcluded={false} />
+				</div>
 			</div>
 
-			<h3>Step 4: Generate New Text
+			<h3 onClick={() => toggleHideSection('generateNewTextBody')}>Step 3: Generate New Text
 			<img src="./dropdown.svg" alt="A clickable dropdown arrow" width={10} height={10} onClick={() => toggleHideSection('generateNewTextBody')} />
 			</h3>
 			<div id='generateNewTextBody'>
