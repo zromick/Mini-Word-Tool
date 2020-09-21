@@ -25,8 +25,9 @@ const ProperNounReplaceContainer = () => {
 		// const talliedWords = _.countBy(words, _.identity);
 
 		if (userTextArea) {
-			// Split all user text into an array when hitting white spac, line breaks, and dashes.
-			const allWords = userTextArea.value.split(/\s+|-/);
+			// Split all user text into an array when hitting white space, line breaks, and dashes.
+			// Filter out blank strings.
+			let allWords = userTextArea.value.split(/\s+|-/).filter(i => i);
 			// Add context to the words by getting surrounding words
 			const allWordsWithContext = allWords.map((word, i) => {
 				const contextString =
@@ -38,16 +39,19 @@ const ProperNounReplaceContainer = () => {
 			console.log('all words', allWordsWithContext);
 			// Clean and standardize words and then check if they are in OSPD.
 			allWordsWithContext.map(wordWithContext => {
+				console.log("sortWords -> wordWithContext", wordWithContext)
 				// Rename keys to uppercase and without punctuation (except apostrophes)
 				const newKey = (Object.keys(wordWithContext)[0]).replace(/[^\w\s']/g, "").toUpperCase();
 				// If the cleaned word is in the Scrabble Dictionary, exclude.
 				// If the uncleaned word contains a number, exclude.
 				if (defaultExcludedWords.indexOf(newKey) !== -1 || /\d/.test(Object.keys(wordWithContext)[0])) {
-					// excludedWords = _.unionBy(excludedWords, newKey); // Attempt to remove dupes
+					// Attempt to merge dupes
+					let tryexclusion = _.merge({ [newKey]: [Object.values(wordWithContext)[0]] }, ...excludedWords);
+					console.log(`tryexclusion`, tryexclusion);
 					excludedWords.push({ [newKey]: Object.values(wordWithContext)[0] });
 
 				} else {
-					// includedWords = _.unionBy(includedWords, newKey); // Attempt to remove dupes
+					// Attempt to merge dupes
 					includedWords.push({ [newKey]: Object.values(wordWithContext)[0] });
 				}
 				return null;
@@ -58,6 +62,14 @@ const ProperNounReplaceContainer = () => {
 			console.log('dif', includedWords);
 			updateExcludedWords(excludedWords);
 			updateIncludedWords(includedWords);
+			let excludedWordsTitle = document.getElementById('excludedWordsTitle');
+			let includedWordsTitle = document.getElementById('includedWordsTitle');
+			if (excludedWordsTitle) {
+				excludedWordsTitle.innerHTML = `Words Excluded From Replacement - ${excludedWords.length} word(s)`;
+			}
+			if (includedWordsTitle) {
+				includedWordsTitle.innerHTML = `Words Included in Replacement - ${includedWords.length} word(s)`;
+			}
 		}
 	}
 

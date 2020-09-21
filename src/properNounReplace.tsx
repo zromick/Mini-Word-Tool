@@ -34,10 +34,9 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 			<p>Suggestions? Please send me an email: <a href="mailto:zachary.romick@vanderbilt.edu">zachary.romick@vanderbilt.edu</a></p>
 			<p>Created on August 21, 2020</p>
 			<p>Last Updated in September 2020</p>
+			<p>Note: Expand or collapse any title by clicking on it</p>
 
-			<h3 onClick={() => toggleHideSection('introductionBody')}>Introduction
-			<img src="./dropdown.svg" alt="A clickable dropdown arrow" width={10} height={10} onClick={() => toggleHideSection('introductionBody')} />
-			</h3>
+			<h3 onClick={() => toggleHideSection('introductionBody')}>Introduction</h3>
 			<div id="introductionBody" style={{ display: "none" }}>
 				<p>This application was created to help writers replace multiple proper nouns at once.</p>
 				<p>Users can also keep track of their changes by exporting/importing words and their replacements.</p>
@@ -49,9 +48,7 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 					<li>Write replacement words for each included word</li>
 					<li>Replace the entire text with replacement words</li>
 				</ol>
-				<h4 onClick={() => toggleHideSection('introExampleBody')}>Example
-				<img src="./dropdown.svg" alt="A clickable dropdown arrow" width={10} height={10} onClick={() => toggleHideSection('introExampleBody')} />
-				</h4>
+				<h4 onClick={() => toggleHideSection('introExampleBody')}>Example</h4>
 				<div id="introExampleBody" style={{ display: "none" }}>
 					<p>Input Text: </p>
 					<p>Jeremiah's friend, Sarah, greeted Muhammad and asked him about the milk.</p>
@@ -71,17 +68,13 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 				</div>
 			</div>
 
-			<h3 onClick={() => toggleHideSection('pasteTextBody')}>Step 1: Paste Text Here
-			<img src="./dropdown.svg" alt="A clickable dropdown arrow" width={10} height={10} onClick={() => toggleHideSection('pasteTextBody')} />
-			</h3>
+			<h3 onClick={() => toggleHideSection('pasteTextBody')}>Step 1: Paste Text Here</h3>
 			<div id='pasteTextBody'>
 				{/* <p>Once pasted, word count frequency will be calculated.</p>
 				<p>Common English words will be placed into an Excluded Words section to keep things clean.</p>
 				<p>Everything else will be placed into the Included Words section.</p> */}
 				<textarea id="userTextArea" cols={40} rows={8} onChange={() => sortWords()}></textarea>
-				<h4 onClick={() => toggleHideSection('importBody')}>Optional: Import
-				<img src="./dropdown.svg" alt="A clickable dropdown arrow" width={10} height={10} onClick={() => toggleHideSection('importBody')} />
-				</h4>
+				<h4 onClick={() => toggleHideSection('importBody')}>Optional: Import</h4>
 				<div id='importBody' style={{ display: "none" }}>
 					{/* <p>You can import previously exported excluded/included words by pasting the export in the text area.</p>
 					<p>Words that have no replacement word will be excluded.</p>
@@ -91,24 +84,18 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 				</div>
 			</div>
 
-			<h3 onClick={() => toggleHideSection('wordManagerBody')}>Step 2: Manage Your Words
-			<img src="./dropdown.svg" alt="A clickable dropdown arrow" width={10} height={10} onClick={() => toggleHideSection('wordManagerBody')} />
-			</h3>
+			<h3 onClick={() => toggleHideSection('wordManagerBody')}>Step 2: Manage Your Words</h3>
 			<div id='wordManagerBody'>
 				{/* <p>Excluded words will not be replaced. The default functionality is to exclude common English words.</p>
 				<p>Included words are words to replace with new words.</p>
 				<button id="frequencySort" onClick={() => sortByFrequency()}>Sort by Frequency</button>
 				<button id="frequencySort" onClick={() => sortAlphabetically()}>Sort Alphabetically</button> */}
-				<h4 onClick={() => toggleHideSection('excludedWordsBody')}>Words Excluded From Replacement
-				<img src="./dropdown.svg" alt="A clickable dropdown arrow" width={10} height={10} onClick={() => toggleHideSection('excludedWordsBody')} />
-				</h4>
+				<h4 id='excludedWordsTitle' onClick={() => toggleHideSection('excludedWordsBody')}>Words Excluded From Replacement</h4>
 				<div id='excludedWordsBody'>
-					<p>Click the "Include" button next to a word to add it to the bottom of the "Included Words" list.</p>
+					{/* <p>Click the "Include" button next to a word to add it to the bottom of the "Included Words" list.</p> */}
 					<WordsWithContext words={excludedWords} wordsAreExcluded={true} />
 				</div>
-				<h4 onClick={() => toggleHideSection('includedWordsBody')}>Words Included in Replacement
-				<img src="./dropdown.svg" alt="A clickable dropdown arrow" width={10} height={10} onClick={() => toggleHideSection('includedWordsBody')} />
-				</h4>
+				<h4 id='includedWordsTitle' onClick={() => toggleHideSection('includedWordsBody')}>Words Included in Replacement</h4>
 				<div id='includedWordsBody'>
 					{/* <p>Click the "Exclude" button next to a word to add it to the bottom of the "Excluded Words" list.</p>
 					<p>Click "Export" to export excluded/included Words (copy to clipboard).</p>
@@ -120,9 +107,7 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 				</div>
 			</div>
 
-			<h3 onClick={() => toggleHideSection('generateNewTextBody')}>Step 3: Generate New Text
-			<img src="./dropdown.svg" alt="A clickable dropdown arrow" width={10} height={10} onClick={() => toggleHideSection('generateNewTextBody')} />
-			</h3>
+			<h3 onClick={() => toggleHideSection('generateNewTextBody')}>Step 3: Generate New Text</h3>
 			<div id='generateNewTextBody'>
 				{/* <p>Click "Replace All" to generate new text.</p>
 				<p>The included words will be replaced and new text will be copied to your clipboard.</p> */}
