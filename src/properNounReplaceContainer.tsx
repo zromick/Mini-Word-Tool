@@ -11,8 +11,8 @@ const ProperNounReplaceContainer = () => {
 	const [includedWords, updateIncludedWords] = useState([] as WordWithContextModel[]);
 	// Paste text and sort words into "Excluded" or "Included"
 	const sortWords = () => {
-		let newExcludedWords: WordWithContextModel[] = [];
-		let newIncludedWords: WordWithContextModel[] = [];
+		// let newExcludedWords: WordWithContextModel[] = [];
+		// let newIncludedWords: WordWithContextModel[] = [];
 		const userTextArea = document.getElementById("userTextArea") as HTMLTextAreaElement;
 		// Default exlusions include English Scrabble words and English contractions.
 		let defaultExcludedWords = ospd().concat(wikiContractions().map(contraction => contraction.toUpperCase()));
@@ -46,24 +46,32 @@ const ProperNounReplaceContainer = () => {
 				// If the cleaned word is in the Scrabble Dictionary, exclude.
 				// If the uncleaned word contains a number, exclude.
 				if (defaultExcludedWords.indexOf(newKey) !== -1 || /\d/.test(Object.keys(wordWithContext)[0])) {
-					// Attempt to merge dupes
-					// let tryexclusion = _.merge({ [newKey]: [Object.values(wordWithContext)[0]] }, ...excludedWords);
-					// console.log(`tryexclusion`, tryexclusion);
-					let newElement = { [newKey]: Object.values(wordWithContext)[0] };
-					// console.log(`index of new element for exclusion current exclusions: `, excludedWords);
-					// console.log(`index of new element for exclusion: `, excludedWords.indexOf(newElement));
-					if (excludedWords.indexOf(newElement) === -1) {
-						newExcludedWords.push({ [newKey]: Object.values(wordWithContext)[0] });
+					// If the word is a new excluded word, push it.
+					let excludedWordIndex = (excludedWords.map(word => Object.keys(word)[0])).indexOf(newKey);
+					if (excludedWordIndex === -1) {
+						excludedWords.push({ [newKey]: [Object.values(wordWithContext)[0]] });
+					}
+					// Else, give the existing key more context.
+					else {
+						excludedWords[excludedWordIndex][newKey].push(Object.values(wordWithContext)[0]);
 					}
 				} else {
-					newIncludedWords.push({ [newKey]: Object.values(wordWithContext)[0] });
+					// If the word is a new included word, push it.
+					let includedWordIndex = (includedWords.map(word => Object.keys(word)[0])).indexOf(newKey);
+					if (includedWordIndex === -1) {
+						includedWords.push({ [newKey]: [Object.values(wordWithContext)[0]] });
+					}
+					// Else, give the existing key more context.
+					else {
+						includedWords[includedWordIndex][newKey].push(Object.values(wordWithContext)[0]);
+					}
 				}
 				return null;
 			})
-			console.log('presents', newExcludedWords);
-			console.log('dif', newIncludedWords);
-			updateExcludedWords(newExcludedWords);
-			updateIncludedWords(newIncludedWords);
+			console.log('presents', excludedWords);
+			console.log('dif', includedWords);
+			updateExcludedWords([...excludedWords]);
+			updateIncludedWords([...includedWords]);
 			// Update excluded and included headers with word count
 			let excludedWordsTitle = document.getElementById('excludedWordsTitle');
 			let includedWordsTitle = document.getElementById('includedWordsTitle');

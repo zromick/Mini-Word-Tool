@@ -3,5 +3,5 @@ export interface WordWithContextModel {
     contextStringHalf1: string;
     contextStringHalf2: string;
     contextStringSelectedWord: string;
-  };
+  }[];
 }
