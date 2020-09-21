@@ -11,8 +11,8 @@ const ProperNounReplaceContainer = () => {
 	const [includedWords, updateIncludedWords] = useState([] as WordWithContextModel[]);
 	// Paste text and sort words into "Excluded" or "Included"
 	const sortWords = () => {
-		let excludedWords: WordWithContextModel[] = [];
-		let includedWords: WordWithContextModel[] = [];
+		let newExcludedWords: WordWithContextModel[] = [];
+		let newIncludedWords: WordWithContextModel[] = [];
 		const userTextArea = document.getElementById("userTextArea") as HTMLTextAreaElement;
 		// Default exlusions include English Scrabble words and English contractions.
 		let defaultExcludedWords = ospd().concat(wikiContractions().map(contraction => contraction.toUpperCase()));
@@ -30,11 +30,12 @@ const ProperNounReplaceContainer = () => {
 			let allWords = userTextArea.value.split(/\s+|-/).filter(i => i);
 			// Add context to the words by getting surrounding words
 			const allWordsWithContext = allWords.map((word, i) => {
-				const contextString =
-					_.join(allWords.slice(i > 3 ? i - 3 : 0, i < allWords.length - 4 ? i + 4 : allWords.length), ' ');
-				const wordLocation = contextString.indexOf(word);
-				const wordLength = word.length;
-				return { [word]: { contextString, wordLocation, wordLength } }
+				const contextStringHalf1 =
+					_.join(allWords.slice(i > 3 ? i - 3 : 0, i), ' ');
+				const contextStringHalf2 =
+					_.join(allWords.slice(i + 1, i < allWords.length - 4 ? i + 4 : allWords.length), ' ');
+				const contextStringSelectedWord = allWords[i];
+				return { [word]: { contextStringHalf1, contextStringHalf2, contextStringSelectedWord } }
 			});
 			console.log('all words', allWordsWithContext);
 			// Clean and standardize words and then check if they are in OSPD.
@@ -46,22 +47,24 @@ const ProperNounReplaceContainer = () => {
 				// If the uncleaned word contains a number, exclude.
 				if (defaultExcludedWords.indexOf(newKey) !== -1 || /\d/.test(Object.keys(wordWithContext)[0])) {
 					// Attempt to merge dupes
-					let tryexclusion = _.merge({ [newKey]: [Object.values(wordWithContext)[0]] }, ...excludedWords);
-					console.log(`tryexclusion`, tryexclusion);
-					excludedWords.push({ [newKey]: Object.values(wordWithContext)[0] });
-
+					// let tryexclusion = _.merge({ [newKey]: [Object.values(wordWithContext)[0]] }, ...excludedWords);
+					// console.log(`tryexclusion`, tryexclusion);
+					let newElement = { [newKey]: Object.values(wordWithContext)[0] };
+					// console.log(`index of new element for exclusion current exclusions: `, excludedWords);
+					// console.log(`index of new element for exclusion: `, excludedWords.indexOf(newElement));
+					if (excludedWords.indexOf(newElement) === -1) {
+						newExcludedWords.push({ [newKey]: Object.values(wordWithContext)[0] });
+					}
 				} else {
-					// Attempt to merge dupes
-					includedWords.push({ [newKey]: Object.values(wordWithContext)[0] });
+					newIncludedWords.push({ [newKey]: Object.values(wordWithContext)[0] });
 				}
 				return null;
 			})
-			// // Remove duplicate words.
-			// wordsToCompare = _.uniq(wordsToCompare);
-			console.log('presents', excludedWords);
-			console.log('dif', includedWords);
-			updateExcludedWords(excludedWords);
-			updateIncludedWords(includedWords);
+			console.log('presents', newExcludedWords);
+			console.log('dif', newIncludedWords);
+			updateExcludedWords(newExcludedWords);
+			updateIncludedWords(newIncludedWords);
+			// Update excluded and included headers with word count
 			let excludedWordsTitle = document.getElementById('excludedWordsTitle');
 			let includedWordsTitle = document.getElementById('includedWordsTitle');
 			if (excludedWordsTitle) {
@@ -95,8 +98,22 @@ const ProperNounReplaceContainer = () => {
 		// Todo
 	}
 
-	const exportWords = () => {
+	const handleExport = () => {
 		// Todo
+	}
+
+	const handleIncludeWord = (word: WordWithContextModel) => {
+		includedWords.push(word);
+		_.pull(excludedWords, word);
+		updateExcludedWords([...excludedWords]);
+		updateIncludedWords([...includedWords]);
+	}
+
+	const handleExcludeWord = (word: WordWithContextModel) => {
+		excludedWords.push(word);
+		_.pull(includedWords, word);
+		updateExcludedWords([...excludedWords]);
+		updateIncludedWords([...includedWords]);
 	}
 
 	const replaceAllIncludedWords = () => {
@@ -119,7 +136,9 @@ const ProperNounReplaceContainer = () => {
 			handleImport={handleImport}
 			sortByFrequency={sortByFrequency}
 			sortAlphabetically={sortAlphabetically}
-			exportWords={exportWords}
+			handleExport={handleExport}
+			handleIncludeWord={handleIncludeWord}
+			handleExcludeWord={handleExcludeWord}
 			replaceAllIncludedWords={replaceAllIncludedWords}
 			excludedWords={excludedWords}
 			includedWords={includedWords}

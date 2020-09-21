@@ -8,7 +8,9 @@ export interface ProperNounReplaceProps {
 	handleImport: () => any,
 	sortByFrequency: () => any,
 	sortAlphabetically: () => any,
-	exportWords: () => any,
+	handleExport: () => any,
+	handleIncludeWord: (word: WordWithContextModel) => any,
+	handleExcludeWord: (word: WordWithContextModel) => any,
 	replaceAllIncludedWords: () => any,
 	excludedWords: WordWithContextModel[],
 	includedWords: WordWithContextModel[],
@@ -21,7 +23,9 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 		handleImport,
 		// sortByFrequency,
 		// sortAlphabetically,
-		exportWords,
+		handleExport,
+		handleExcludeWord,
+		handleIncludeWord,
 		replaceAllIncludedWords,
 		excludedWords,
 		includedWords,
@@ -93,17 +97,25 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 				<h4 id='excludedWordsTitle' onClick={() => toggleHideSection('excludedWordsBody')}>Words Excluded From Replacement</h4>
 				<div id='excludedWordsBody'>
 					{/* <p>Click the "Include" button next to a word to add it to the bottom of the "Included Words" list.</p> */}
-					<WordsWithContext words={excludedWords} wordsAreExcluded={true} />
+					<WordsWithContext
+						words={excludedWords}
+						wordsAreExcluded={true}
+						handleWordListChange={handleIncludeWord}
+					/>
 				</div>
 				<h4 id='includedWordsTitle' onClick={() => toggleHideSection('includedWordsBody')}>Words Included in Replacement</h4>
 				<div id='includedWordsBody'>
 					{/* <p>Click the "Exclude" button next to a word to add it to the bottom of the "Excluded Words" list.</p>
 					<p>Click "Export" to export excluded/included Words (copy to clipboard).</p>
 					<p>This should be saved "as is" and used in the import area above.</p> */}
-					<button id="frequencySort" onClick={() => exportWords()}>Export</button>
+					<button id="frequencySort" onClick={() => handleExport()}>Export</button>
 					<br />
 					<br />
-					<WordsWithContext words={includedWords} wordsAreExcluded={false} />
+					<WordsWithContext
+						words={includedWords}
+						wordsAreExcluded={false}
+						handleWordListChange={handleExcludeWord}
+					/>
 				</div>
 			</div>
 
