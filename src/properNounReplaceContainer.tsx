@@ -7,12 +7,12 @@ import { WordWithContextModel } from './models';
 
 const ProperNounReplaceContainer = () => {
 
-	const [excludedWords, updateExcludedWords] = useState([] as WordWithContextModel[]);
-	const [includedWords, updateIncludedWords] = useState([] as WordWithContextModel[]);
+	let [excludedWords, updateExcludedWords] = useState([] as WordWithContextModel[]);
+	let [includedWords, updateIncludedWords] = useState([] as WordWithContextModel[]);
 	// Paste text and sort words into "Excluded" or "Included"
 	const sortWords = () => {
-		// let newExcludedWords: WordWithContextModel[] = [];
-		// let newIncludedWords: WordWithContextModel[] = [];
+		excludedWords = [];
+		includedWords = [];
 		const userTextArea = document.getElementById("userTextArea") as HTMLTextAreaElement;
 		// Default exlusions include English Scrabble words and English contractions.
 		let defaultExcludedWords = ospd().concat(wikiContractions().map(contraction => contraction.toUpperCase()));
@@ -37,10 +37,10 @@ const ProperNounReplaceContainer = () => {
 				const contextStringSelectedWord = allWords[i];
 				return { [word]: { contextStringHalf1, contextStringHalf2, contextStringSelectedWord } }
 			});
-			console.log('all words', allWordsWithContext);
+			// console.log('all words', allWordsWithContext);
 			// Clean and standardize words and then check if they are in OSPD.
 			allWordsWithContext.map(wordWithContext => {
-				console.log("sortWords -> wordWithContext", wordWithContext)
+				// console.log("sortWords -> wordWithContext", wordWithContext)
 				// Rename keys to uppercase and without punctuation (except apostrophes)
 				const newKey = (Object.keys(wordWithContext)[0]).replace(/[^\w\s']/g, "").toUpperCase();
 				// If the cleaned word is in the Scrabble Dictionary, exclude.
@@ -68,19 +68,23 @@ const ProperNounReplaceContainer = () => {
 				}
 				return null;
 			})
-			console.log('presents', excludedWords);
-			console.log('dif', includedWords);
+			// console.log('presents', excludedWords);
+			// console.log('dif', includedWords);
 			updateExcludedWords([...excludedWords]);
 			updateIncludedWords([...includedWords]);
-			// Update excluded and included headers with word count
-			let excludedWordsTitle = document.getElementById('excludedWordsTitle');
-			let includedWordsTitle = document.getElementById('includedWordsTitle');
-			if (excludedWordsTitle) {
-				excludedWordsTitle.innerHTML = `Words Excluded From Replacement - ${excludedWords.length} word(s)`;
-			}
-			if (includedWordsTitle) {
-				includedWordsTitle.innerHTML = `Words Included in Replacement - ${includedWords.length} word(s)`;
-			}
+			tallyTitleTotals();
+		}
+	}
+
+	const tallyTitleTotals = () => {
+		// Update excluded and included headers with word count
+		let excludedWordsTitle = document.getElementById('excludedWordsTitle');
+		let includedWordsTitle = document.getElementById('includedWordsTitle');
+		if (excludedWordsTitle) {
+			excludedWordsTitle.innerHTML = `Words Excluded From Replacement - ${excludedWords.length} word(s)`;
+		}
+		if (includedWordsTitle) {
+			includedWordsTitle.innerHTML = `Words Included in Replacement - ${includedWords.length} word(s)`;
 		}
 	}
 
@@ -115,6 +119,7 @@ const ProperNounReplaceContainer = () => {
 		_.pull(excludedWords, word);
 		updateExcludedWords([...excludedWords]);
 		updateIncludedWords([...includedWords]);
+		tallyTitleTotals();
 	}
 
 	const handleExcludeWord = (word: WordWithContextModel) => {
@@ -122,6 +127,7 @@ const ProperNounReplaceContainer = () => {
 		_.pull(includedWords, word);
 		updateExcludedWords([...excludedWords]);
 		updateIncludedWords([...includedWords]);
+		tallyTitleTotals();
 	}
 
 	const replaceAllIncludedWords = () => {

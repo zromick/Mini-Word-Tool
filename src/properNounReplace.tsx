@@ -78,6 +78,7 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 				<p>Common English words will be placed into an Excluded Words section to keep things clean.</p>
 				<p>Everything else will be placed into the Included Words section.</p> */}
 				<textarea id="userTextArea" cols={40} rows={8} onChange={() => sortWords()}></textarea>
+				{/* <button onClick={() => sortWords()}>Sort</button> */}
 				<h4 onClick={() => toggleHideSection('importBody')}>Optional: Import</h4>
 				<div id='importBody' style={{ display: "none" }}>
 					{/* <p>You can import previously exported excluded/included words by pasting the export in the text area.</p>

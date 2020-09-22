@@ -14,25 +14,29 @@ const WordsWithContext = (props: WordsWithContextProps) => {
   let wordList: any[] = [];
 
   words.map((word, wordIndex) => {
-    let maxWordLength = 15;
+    let maxWordLength = 12;
     let maxButtonWordLength = 7;
 
-    // Make a context string for all the examples that the word shows up in the user's text
-    Object.values(word)[0].map((context, contextIndex) => {
-      let wordString: string = context.contextStringSelectedWord;
-      let contextStringHalf1: string = context.contextStringHalf1;
-      let contextStringHalf2: string = context.contextStringHalf2;
+    // Make a context string for all the examples in which the word appears in the user's text
+    let contextStrings = Object.values(word)[0];
+    contextStrings.map((contextString, contextIndex) => {
+      let wordCleaned: string = Object.keys(word)[0];
+      let wordString: string = contextString.contextStringSelectedWord;
+      let contextStringHalf1: string = contextString.contextStringHalf1;
+      let contextStringHalf2: string = contextString.contextStringHalf2;
 
       wordList.push(
         <Grid container key={`Key${word}${wordIndex}${contextIndex}`}>
           <Grid item xs={3}>
-            {wordString.length > maxWordLength
-              ? <Tooltip title={wordString}>
-                <div>
-                  {wordString.substr(0, maxWordLength) + '...'}
-                </div>
-              </Tooltip>
-              : <div>{wordString}</div>
+            {contextIndex === 0
+              ? (wordCleaned.length > maxWordLength
+                ? <Tooltip title={wordCleaned}>
+                  <div>
+                    {`${wordCleaned.substr(0, maxWordLength)}...(${contextStrings.length})`}
+                  </div>
+                </Tooltip>
+                : <div>{`${wordCleaned}...(${contextStrings.length})`}</div>)
+              : null
             }
           </Grid>
           <Grid item xs={5}>
@@ -42,19 +46,22 @@ const WordsWithContext = (props: WordsWithContextProps) => {
           </Grid>
           <Grid item xs={1}></Grid>
           <Grid item xs={3}>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => handleWordListChange(word)}>
-              {wordsAreExcluded
-                ? `Include '${wordString.length > maxButtonWordLength
-                  ? wordString.substr(0, maxButtonWordLength) + '...'
-                  : wordString}'`
-                : `Exclude '${wordString.length > maxButtonWordLength
-                  ? wordString.substr(0, maxButtonWordLength) + '...'
-                  : wordString}'`
-              }
-            </Button>
+            {contextIndex !== -1 // contextIndex === 0
+              ? <Button
+                fullWidth
+                variant="outlined"
+                onClick={() => handleWordListChange(word)}>
+                {wordsAreExcluded
+                  ? `Include '${wordString.length > maxButtonWordLength
+                    ? wordString.substr(0, maxButtonWordLength) + '...'
+                    : wordString}'`
+                  : `Exclude '${wordString.length > maxButtonWordLength
+                    ? wordString.substr(0, maxButtonWordLength) + '...'
+                    : wordString}'`
+                }
+              </Button>
+              : null
+            }
           </Grid>
         </Grid>
       );
