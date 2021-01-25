@@ -31,21 +31,21 @@ const ProperNounReplaceContainer = () => {
 					// If the word is a new excluded word, push it.
 					let excludedWordIndex = (excludedWords.map(word => Object.keys(word)[0])).indexOf(key);
 					if (excludedWordIndex === -1) {
-						excludedWords.push({ [key]: [{ wordIndex }] });
+						excludedWords.push({ [key]: [wordIndex] });
 					}
 					// Else, give the existing key more context.
 					else {
-						excludedWords[excludedWordIndex][key].push({ wordIndex });
+						excludedWords[excludedWordIndex][key].push(wordIndex);
 					}
 				} else {
 					// If the word is a new included word, push it.
 					let includedWordIndex = (includedWords.map(word => Object.keys(word)[0])).indexOf(key);
 					if (includedWordIndex === -1) {
-						includedWords.push({ [key]: [{ wordIndex }] });
+						includedWords.push({ [key]: [wordIndex] });
 					}
 					// Else, give the existing key more context.
 					else {
-						includedWords[includedWordIndex][key].push({ wordIndex });
+						includedWords[includedWordIndex][key].push(wordIndex);
 					}
 				}
 				return null;
@@ -116,20 +116,6 @@ const ProperNounReplaceContainer = () => {
 		tallyTitleTotals();
 	}
 
-	const handleShowContext = (word: WordWithContextModel) => {
-		console.log("handleShowContext")
-		// Add context to the words by getting surrounding words
-		// const allWordsWithContext = allWords.map((word, i) => {
-		// 	const contextStringHalf1 =
-		// 		_.join(allWords.slice(i > 3 ? i - 3 : 0, i), ' ');
-		// 	const contextStringHalf2 =
-		// 		_.join(allWords.slice(i + 1, i < allWords.length - 4 ? i + 4 : allWords.length), ' ');
-		// 	const contextStringSelectedWord = allWords[i];
-		/* <Typography style={{ wordBreak: 'break-all' }}>
-			{contextStringHalf1}<b>{` ${wordString} `}</b>{contextStringHalf2}
-		</Typography> */
-	}
-
 	const replaceAllIncludedWords = () => {
 		// Allow user to copy the new text to clipboard
 		const copyNewTextElement = document.getElementById("copyNewText") as HTMLInputElement;
@@ -153,10 +139,10 @@ const ProperNounReplaceContainer = () => {
 			handleExport={handleExport}
 			handleIncludeWord={handleIncludeWord}
 			handleExcludeWord={handleExcludeWord}
-			handleShowContext={handleShowContext}
 			replaceAllIncludedWords={replaceAllIncludedWords}
 			excludedWords={excludedWords}
 			includedWords={includedWords}
+			allWords={allWords}
 		/>
 	);
 }

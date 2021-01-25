@@ -11,10 +11,10 @@ export interface ProperNounReplaceProps {
 	handleExport: () => any,
 	handleIncludeWord: (word: WordWithContextModel) => any,
 	handleExcludeWord: (word: WordWithContextModel) => any,
-	handleShowContext: (word: WordWithContextModel) => any,
 	replaceAllIncludedWords: () => any,
 	excludedWords: WordWithContextModel[],
 	includedWords: WordWithContextModel[],
+	allWords: string[];
 }
 
 const ProperNounReplace = (props: ProperNounReplaceProps) => {
@@ -27,10 +27,10 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 		handleExport,
 		handleExcludeWord,
 		handleIncludeWord,
-		handleShowContext,
 		replaceAllIncludedWords,
 		excludedWords,
 		includedWords,
+		allWords,
 	} = props;
 	// h3 class="panel-title"
 	return (
@@ -104,8 +104,8 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 					<WordsWithContext
 						words={excludedWords}
 						wordsAreExcluded={true}
+						allWords={allWords}
 						handleWordListChange={handleIncludeWord}
-						handleShowContext={handleShowContext}
 					/>
 				</div>
 				<h4 id='includedWordsTitle' onClick={() => toggleHideSection('includedWordsBody')}>Words Included in Replacement</h4>
@@ -119,8 +119,8 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 					<WordsWithContext
 						words={includedWords}
 						wordsAreExcluded={false}
+						allWords={allWords}
 						handleWordListChange={handleExcludeWord}
-						handleShowContext={handleShowContext}
 					/>
 				</div>
 			</div>

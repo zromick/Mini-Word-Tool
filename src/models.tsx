@@ -7,6 +7,7 @@
 // }
 
 export interface WordWithContextModel {
-  [word: string]: { wordIndex: number }[];
+  // Number array represents the indeces at which the word shows up in text
+  [word: string]: number[];
 }
 

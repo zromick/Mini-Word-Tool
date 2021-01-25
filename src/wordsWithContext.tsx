@@ -1,12 +1,12 @@
 import React from 'react';
-import { Grid, Tooltip, Typography, Button } from '@material-ui/core';
+import { Grid, Tooltip, Button } from '@material-ui/core';
 import { WordWithContextModel } from './models';
-// import styles from './properNounReplace.scss';
+import Context from './context';
 
 export interface WordsWithContextProps {
   words: WordWithContextModel[],
   wordsAreExcluded: boolean,
-  handleShowContext: (word: WordWithContextModel) => any,
+  allWords: string[],
   handleWordListChange: (word: WordWithContextModel) => any,
 }
 
@@ -15,22 +15,15 @@ const WordsWithContext = (props: WordsWithContextProps) => {
     words,
     wordsAreExcluded,
     handleWordListChange,
-    handleShowContext,
+    allWords,
   } = props;
   let wordList: any[] = [];
 
   words.map((word, wordIndex) => {
     let maxWordLength = 12;
     let maxButtonWordLength = 7;
-
-    // Make a context string for all the examples in which the word appears in the user's text
-    // let contextStrings = Object.values(word)[0];
-    // contextStrings.map((contextString, contextIndex) => {
     let wordCleaned: string = Object.keys(word)[0];
-    let contextIndeces: { wordIndex: number }[] = Object.values(word)[0];
-    //   let wordString: string = contextString.contextStringSelectedWord;
-    //   let contextStringHalf1: string = contextString.contextStringHalf1;
-    //   let contextStringHalf2: string = contextString.contextStringHalf2;
+    let contextIndeces: number[] = Object.values(word)[0];
 
     wordList.push(
       <Grid container key={`Key${word}${wordIndex}`}>
@@ -45,13 +38,10 @@ const WordsWithContext = (props: WordsWithContextProps) => {
           }
         </Grid>
         <Grid item xs={5}>
-          <Button
-            fullWidth
-            variant="outlined"
-            onClick={() => handleShowContext(word)}
-          >
-            Show Context
-          </Button>
+          <Context
+            contextIndeces={contextIndeces}
+            allWords={allWords}
+          />
         </Grid>
         <Grid item xs={1}></Grid>
         <Grid item xs={3}>
