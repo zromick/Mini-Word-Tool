@@ -5,12 +5,13 @@ import { WordWithContextModel } from './models';
 export interface ProperNounReplaceProps {
 	toggleHideSection: (id: string) => any,
 	sortWords: () => any,
-	handleImport: () => any,
 	sortByFrequency: () => any,
 	sortAlphabetically: () => any,
+	handleImport: () => any,
 	handleExport: () => any,
 	handleIncludeWord: (word: WordWithContextModel) => any,
 	handleExcludeWord: (word: WordWithContextModel) => any,
+	handleShowContext: (word: WordWithContextModel) => any,
 	replaceAllIncludedWords: () => any,
 	excludedWords: WordWithContextModel[],
 	includedWords: WordWithContextModel[],
@@ -20,12 +21,13 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 	const {
 		toggleHideSection,
 		sortWords,
-		handleImport,
 		// sortByFrequency,
 		// sortAlphabetically,
+		handleImport,
 		handleExport,
 		handleExcludeWord,
 		handleIncludeWord,
+		handleShowContext,
 		replaceAllIncludedWords,
 		excludedWords,
 		includedWords,
@@ -95,6 +97,7 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 				<p>Included words are words to replace with new words.</p>
 				<button id="frequencySort" onClick={() => sortByFrequency()}>Sort by Frequency</button>
 				<button id="frequencySort" onClick={() => sortAlphabetically()}>Sort Alphabetically</button> */}
+				<h4 id='wordCountTitle'>Word Count</h4>
 				<h4 id='excludedWordsTitle' onClick={() => toggleHideSection('excludedWordsBody')}>Words Excluded From Replacement</h4>
 				<div id='excludedWordsBody'>
 					{/* <p>Click the "Include" button next to a word to add it to the bottom of the "Included Words" list.</p> */}
@@ -102,6 +105,7 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 						words={excludedWords}
 						wordsAreExcluded={true}
 						handleWordListChange={handleIncludeWord}
+						handleShowContext={handleShowContext}
 					/>
 				</div>
 				<h4 id='includedWordsTitle' onClick={() => toggleHideSection('includedWordsBody')}>Words Included in Replacement</h4>
@@ -116,6 +120,7 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 						words={includedWords}
 						wordsAreExcluded={false}
 						handleWordListChange={handleExcludeWord}
+						handleShowContext={handleShowContext}
 					/>
 				</div>
 			</div>
