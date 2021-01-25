@@ -98,6 +98,7 @@ const ProperNounReplaceContainer = () => {
 		// Todo
 	}
 
+	// Sent into the handleWordListChange prop for wordsWithCotnext
 	const handleIncludeWord = (word: WordWithContextModel) => {
 		includedWords.push(word);
 		_.pull(excludedWords, word);
@@ -106,6 +107,7 @@ const ProperNounReplaceContainer = () => {
 		tallyTitleTotals();
 	}
 
+	// Sent into the handleWordListChange prop for wordsWithCotnext
 	const handleExcludeWord = (word: WordWithContextModel) => {
 		excludedWords.push(word);
 		_.pull(includedWords, word);

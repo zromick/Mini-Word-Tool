@@ -59,7 +59,8 @@ const WordsWithContext = (props: WordsWithContextProps) => {
             <Button
               fullWidth
               variant="outlined"
-              onClick={() => handleWordListChange(word)}>
+              onClick={() => handleWordListChange(word)}
+            >
               {wordsAreExcluded
                 ? `Include '${wordCleaned.length > maxButtonWordLength
                   ? wordCleaned.substr(0, maxButtonWordLength) + '...'
