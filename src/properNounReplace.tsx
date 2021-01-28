@@ -1,6 +1,6 @@
 import React from 'react';
 import WordsWithContext from './wordsWithContext';
-import { WordWithContextModel } from './models';
+import { Word } from './models';
 
 export interface ProperNounReplaceProps {
 	toggleHideSection: (id: string) => any,
@@ -9,12 +9,12 @@ export interface ProperNounReplaceProps {
 	sortAlphabetically: () => any,
 	handleImport: () => any,
 	handleExport: () => any,
-	handleIncludeWord: (word: WordWithContextModel) => any,
-	handleExcludeWord: (word: WordWithContextModel) => any,
+	handleIncludeWord: (word: Word) => any,
+	handleExcludeWord: (word: Word) => any,
 	replaceAllIncludedWords: () => any,
-	excludedWords: WordWithContextModel[],
-	includedWords: WordWithContextModel[],
-	allWords: string[];
+	excludedWords: Word[],
+	includedWords: Word[],
+	allWordsRaw: string[];
 }
 
 const ProperNounReplace = (props: ProperNounReplaceProps) => {
@@ -30,7 +30,7 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 		replaceAllIncludedWords,
 		excludedWords,
 		includedWords,
-		allWords,
+		allWordsRaw,
 	} = props;
 	// h3 class="panel-title"
 	return (
@@ -39,7 +39,7 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 			<p>By <a href="https://github.com/zromick">Zac Romick</a></p>
 			<p>Suggestions? Please send me an email: <a href="mailto:zachary.romick@vanderbilt.edu">zachary.romick@vanderbilt.edu</a></p>
 			<p>Created on August 21, 2020</p>
-			<p>Last Updated in September 2020</p>
+			<p>Last Updated on January 25, 2021</p>
 			<p>Note: Expand or collapse any title by clicking on it</p>
 
 			<h3 onClick={() => toggleHideSection('introductionBody')}>Introduction</h3>
@@ -104,7 +104,7 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 					<WordsWithContext
 						words={excludedWords}
 						wordsAreExcluded={true}
-						allWords={allWords}
+						allWordsRaw={allWordsRaw}
 						handleWordListChange={handleIncludeWord}
 					/>
 				</div>
@@ -119,7 +119,7 @@ const ProperNounReplace = (props: ProperNounReplaceProps) => {
 					<WordsWithContext
 						words={includedWords}
 						wordsAreExcluded={false}
-						allWords={allWords}
+						allWordsRaw={allWordsRaw}
 						handleWordListChange={handleExcludeWord}
 					/>
 				</div>

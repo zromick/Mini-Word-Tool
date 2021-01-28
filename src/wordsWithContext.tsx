@@ -1,13 +1,13 @@
 import React from 'react';
 import { Grid, Tooltip, Button } from '@material-ui/core';
-import { WordWithContextModel } from './models';
+import { Word } from './models';
 import Context from './context';
 
 export interface WordsWithContextProps {
-  words: WordWithContextModel[],
+  words: Word[],
   wordsAreExcluded: boolean,
-  allWords: string[],
-  handleWordListChange: (word: WordWithContextModel) => any,
+  allWordsRaw: string[],
+  handleWordListChange: (word: Word) => any,
 }
 
 const WordsWithContext = (props: WordsWithContextProps) => {
@@ -15,7 +15,7 @@ const WordsWithContext = (props: WordsWithContextProps) => {
     words,
     wordsAreExcluded,
     handleWordListChange,
-    allWords,
+    allWordsRaw,
   } = props;
   let wordList: any[] = [];
 
@@ -23,7 +23,12 @@ const WordsWithContext = (props: WordsWithContextProps) => {
     let maxWordLength = 12;
     let maxButtonWordLength = 7;
     let wordCleaned: string = Object.keys(word)[0];
-    let contextIndeces: number[] = Object.values(word)[0];
+    let contextIndecesCollection: number[] = [];
+
+    // Get all the places that the word is mentioned (contextIndeces per word replacement)
+    Object.values(word[wordCleaned])
+      .map(contextIndeces => contextIndecesCollection = contextIndecesCollection.concat(contextIndeces));
+
 
     wordList.push(
       <Grid container key={`Key${word}${wordIndex}`}>
@@ -31,16 +36,16 @@ const WordsWithContext = (props: WordsWithContextProps) => {
           {wordCleaned.length > maxWordLength
             ? <Tooltip title={wordCleaned}>
               <div>
-                {`${wordCleaned.substr(0, maxWordLength)}...(${contextIndeces.length})`}
+                {`${wordCleaned.substr(0, maxWordLength)}...(${contextIndecesCollection.length})`}
               </div>
             </Tooltip>
-            : <div>{`${wordCleaned}...(${contextIndeces.length})`}</div>
+            : <div>{`${wordCleaned}...(${contextIndecesCollection.length})`}</div>
           }
         </Grid>
         <Grid item xs={5}>
           <Context
-            contextIndeces={contextIndeces}
-            allWords={allWords}
+            contextIndeces={contextIndecesCollection.sort()}
+            allWordsRaw={allWordsRaw}
           />
         </Grid>
         <Grid item xs={1}></Grid>

@@ -3,55 +3,63 @@ import ProperNounReplace from './properNounReplace';
 import { ospd, wikiContractions } from './commonWords'; // Official Scrabble Player's Dictionary
 import _ from 'lodash';
 import $ from 'jquery';
-import { WordWithContextModel } from './models';
+import { Word } from './models';
 
 const ProperNounReplaceContainer = () => {
-
-	let [excludedWords, updateExcludedWords] = useState([] as WordWithContextModel[]);
-	let [includedWords, updateIncludedWords] = useState([] as WordWithContextModel[]);
-	let [allWords, updateAllWords] = useState([] as string[]);
+	let [excludedWords, updateExcludedWords] = useState([] as Word[]);
+	let [includedWords, updateIncludedWords] = useState([] as Word[]);
+	// let [allWords, updateAllWords] = useState([] as Word[]);
+	let [allWordsRaw, updateAllWordsRaw] = useState([] as string[]);
 	// Paste text and sort words into "Excluded" or "Included"
 	const sortWords = () => {
-		excludedWords = [];
-		includedWords = [];
+		let excludedWordsTemp: Word[] = [];
+		let includedWordsTemp: Word[] = [];
 		const userTextArea = document.getElementById("userTextArea") as HTMLTextAreaElement;
 		// Default exlusions include English Scrabble words and English contractions.
 		let defaultExcludedWords = ospd().concat(wikiContractions().map(contraction => contraction.toUpperCase()));
 		if (userTextArea) {
 			// Split all user text into an array when hitting white space, line breaks, and dashes.
 			// Filter out blank strings.
-			allWords = userTextArea.value.split(/\s+|-/).filter(i => i);
-			updateAllWords([...allWords]);
-			allWords.map((word, wordIndex) => {
+			console.log((new Date()).toLocaleString())
+			//let promise = new Promise(function (resolve, reject) {
+			allWordsRaw = userTextArea.value.split(/\s+|-/).filter(i => i);
+			allWordsRaw.map((word, wordIndex) => {
 				// Rename keys to uppercase and without punctuation (except apostrophes)
 				let key = word.replace(/[^\w\s']/g, "").toUpperCase();
 				// If the cleaned word is in the Scrabble Dictionary, exclude
 				// If the uncleaned word contains a number, exclude
 				if (defaultExcludedWords.indexOf(key) !== -1 || /\d/.test(word)) {
 					// If the word is a new excluded word, push it.
-					let excludedWordIndex = (excludedWords.map(word => Object.keys(word)[0])).indexOf(key);
+					let excludedWordIndex = (excludedWordsTemp.map(word => Object.keys(word)[0])).indexOf(key);
 					if (excludedWordIndex === -1) {
-						excludedWords.push({ [key]: [wordIndex] });
+						console.log(excludedWordsTemp, excludedWordIndex, key, wordIndex);
+						excludedWordsTemp.push({ [key]: { 'default': [wordIndex] } })
+						// For testing excludedWordsTemp[0][key]['samurai'] = [33, 34, 66];
+						// For testing excludedWordsTemp[0][key]['flan'] = [27, 89];
 					}
-					// Else, give the existing key more context.
+					// Else give the existing key more context.
 					else {
-						excludedWords[excludedWordIndex][key].push(wordIndex);
+						console.log(excludedWordsTemp, excludedWordIndex, key, wordIndex);
+						excludedWordsTemp[excludedWordIndex][key]['default'].push(wordIndex);
 					}
 				} else {
 					// If the word is a new included word, push it.
-					let includedWordIndex = (includedWords.map(word => Object.keys(word)[0])).indexOf(key);
+					let includedWordIndex = (includedWordsTemp.map(word => Object.keys(word)[0])).indexOf(key);
 					if (includedWordIndex === -1) {
-						includedWords.push({ [key]: [wordIndex] });
+						includedWordsTemp.push({ [key]: { 'default': [wordIndex] } })
 					}
 					// Else, give the existing key more context.
 					else {
-						includedWords[includedWordIndex][key].push(wordIndex);
+						includedWordsTemp[includedWordIndex][key]['default'].push(wordIndex);
 					}
 				}
 				return null;
 			});
-			updateExcludedWords([...excludedWords]);
-			updateIncludedWords([...includedWords]);
+			// console.log('aawords raw', allWordsRaw);
+			// console.log('all words', allWords)
+			updateExcludedWords([...excludedWordsTemp]);
+			updateIncludedWords([...includedWordsTemp])
+			updateAllWordsRaw([...allWordsRaw]);
 			tallyTitleTotals();
 		}
 	}
@@ -68,7 +76,7 @@ const ProperNounReplaceContainer = () => {
 			includedWordsTitle.innerHTML = `Words Included in Replacement - ${includedWords.length} unique word(s)`;
 		}
 		if (wordCountTitle) {
-			wordCountTitle.innerHTML = `Word Count - ${allWords.length} word(s). ${excludedWords.length + includedWords.length} unique word(s)`;
+			wordCountTitle.innerHTML = `Word Count - ${allWordsRaw.length} word(s). ${excludedWords.length + includedWords.length} unique word(s)`;
 		}
 	}
 
@@ -98,8 +106,8 @@ const ProperNounReplaceContainer = () => {
 		// Todo
 	}
 
-	// Sent into the handleWordListChange prop for wordsWithCotnext
-	const handleIncludeWord = (word: WordWithContextModel) => {
+	// Sent into the handleWordListChange prop for wordsWithContext
+	const handleIncludeWord = (word: Word) => {
 		includedWords.push(word);
 		_.pull(excludedWords, word);
 		updateExcludedWords([...excludedWords]);
@@ -107,8 +115,8 @@ const ProperNounReplaceContainer = () => {
 		tallyTitleTotals();
 	}
 
-	// Sent into the handleWordListChange prop for wordsWithCotnext
-	const handleExcludeWord = (word: WordWithContextModel) => {
+	// Sent into the handleWordListChange prop for wordsWithContext
+	const handleExcludeWord = (word: Word) => {
 		excludedWords.push(word);
 		_.pull(includedWords, word);
 		updateExcludedWords([...excludedWords]);
@@ -142,7 +150,7 @@ const ProperNounReplaceContainer = () => {
 			replaceAllIncludedWords={replaceAllIncludedWords}
 			excludedWords={excludedWords}
 			includedWords={includedWords}
-			allWords={allWords}
+			allWordsRaw={allWordsRaw}
 		/>
 	);
 }

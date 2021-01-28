@@ -4,38 +4,42 @@ import _ from 'lodash';
 
 export interface ContextProps {
   contextIndeces: number[];
-  allWords: string[];
+  allWordsRaw: string[];
 }
 
-const CONTEXT_BOUNDS_LENGTH = 4;
+const CONTEXT_BOUNDS_LENGTH = 3; // Grab this many words from the left and right
 
 // Create a context string for each appearance of the word in the text
 const Context = (props: ContextProps) => {
   const {
     contextIndeces,
-    allWords
+    allWordsRaw
   } = props;
   let contextList: any[] = [];
   let contextBuildingArrayFirstHalf: string[] = [];
   let contextBuildingArraySecondHalf: string[] = [];
-  contextIndeces.map((indexThatWordAppears: number) => {
-    for (let i = 1; i < CONTEXT_BOUNDS_LENGTH; i++) {
-      if (typeof (allWords[indexThatWordAppears - i]) !== "undefined") {
-        contextBuildingArrayFirstHalf.unshift(allWords[indexThatWordAppears - i]);
+  if (contextIndeces.length > 0) {
+    contextIndeces.map((indexThatWordAppears: number) => {
+      for (let i = 1; i <= CONTEXT_BOUNDS_LENGTH; i++) {
+        if (typeof (allWordsRaw[indexThatWordAppears - i]) !== "undefined") {
+          contextBuildingArrayFirstHalf.unshift(allWordsRaw[indexThatWordAppears - i]);
+        }
+        if (typeof (allWordsRaw[indexThatWordAppears + i]) !== "undefined") {
+          contextBuildingArraySecondHalf.push(allWordsRaw[indexThatWordAppears + i]);
+        }
       }
-      if (typeof (allWords[indexThatWordAppears + i]) !== "undefined") {
-        contextBuildingArraySecondHalf.push(allWords[indexThatWordAppears + i]);
-      }
-    }
-    contextList.push(
-      <Typography style={{ wordBreak: 'break-all' }}>
-        {_.join(contextBuildingArrayFirstHalf, ' ')}<b>{` ${allWords[indexThatWordAppears]} `}</b>{_.join(contextBuildingArraySecondHalf, ' ')}
-      </Typography>
-    );
-    contextBuildingArrayFirstHalf = [];
-    contextBuildingArraySecondHalf = [];
-    return null;
-  });
+      contextList.push(
+        <Typography key={'key' + indexThatWordAppears} style={{ wordBreak: 'break-all' }}>
+          {_.join(contextBuildingArrayFirstHalf, ' ')}
+          <b>{` ${allWordsRaw[indexThatWordAppears]} `}</b>
+          {_.join(contextBuildingArraySecondHalf, ' ')}
+        </Typography>
+      );
+      contextBuildingArrayFirstHalf = [];
+      contextBuildingArraySecondHalf = [];
+      return null;
+    });
+  }
   return (
     <div>
       {contextList}
