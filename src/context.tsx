@@ -3,6 +3,7 @@ import { Typography } from '@material-ui/core';
 import _ from 'lodash';
 
 export interface ContextProps {
+  replacementWord: string;
   contextIndeces: number[];
   allWordsRaw: string[];
 }
@@ -12,6 +13,7 @@ const CONTEXT_BOUNDS_LENGTH = 3; // Grab this many words from the left and right
 // Create a context string for each appearance of the word in the text
 const Context = (props: ContextProps) => {
   const {
+    replacementWord,
     contextIndeces,
     allWordsRaw
   } = props;
@@ -31,7 +33,7 @@ const Context = (props: ContextProps) => {
       contextList.push(
         <Typography key={'key' + indexThatWordAppears} style={{ wordBreak: 'break-all' }}>
           {_.join(contextBuildingArrayFirstHalf, ' ')}
-          <b>{` ${allWordsRaw[indexThatWordAppears]} `}</b>
+          <b>{` ${allWordsRaw[indexThatWordAppears]} -> ${replacementWord} `}</b>
           {_.join(contextBuildingArraySecondHalf, ' ')}
         </Typography>
       );

@@ -20,9 +20,8 @@ const ProperNounReplaceContainer = () => {
 		if (userTextArea) {
 			// Split all user text into an array when hitting white space, line breaks, and dashes.
 			// Filter out blank strings.
-			console.log((new Date()).toLocaleString())
-			//let promise = new Promise(function (resolve, reject) {
-			allWordsRaw = userTextArea.value.split(/\s+|-/).filter(i => i);
+			// Split on this if you want dashes out: (/\s+|-). Example: tip-top becomes tip and top
+			allWordsRaw = userTextArea.value.split(/\s+/).filter(i => i);
 			allWordsRaw.map((word, wordIndex) => {
 				// Rename keys to uppercase and without punctuation (except apostrophes)
 				let key = word.replace(/[^\w\s']/g, "").toUpperCase();
