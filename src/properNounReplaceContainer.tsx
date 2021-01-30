@@ -33,8 +33,6 @@ const ProperNounReplaceContainer = () => {
 					if (excludedWordIndex === -1) {
 						console.log(excludedWordsTemp, excludedWordIndex, key, wordIndex);
 						excludedWordsTemp.push({ [key]: { 'default': [wordIndex] } })
-						// For testing excludedWordsTemp[0][key]['samurai'] = [33, 34, 66];
-						// For testing excludedWordsTemp[0][key]['flan'] = [27, 89];
 					}
 					// Else give the existing key more context.
 					else {

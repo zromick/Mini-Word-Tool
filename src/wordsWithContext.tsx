@@ -24,10 +24,12 @@ const WordsWithContext = (props: WordsWithContextProps) => {
     let maxWordLength = 12;
     let maxButtonWordLength = 7;
     let wordCleaned: string = Object.keys(word)[0];
-    let contextIndecesCollection: number[] = [];
+    let wordCount: number = 0;
 
-    // Get all the places that the word is mentioned (contextIndeces per word replacement)
-    // Was this before: contextIndecesCollection = contextIndecesCollection.concat(contextIndeces)
+    // Get wordCount
+    Object.values(word[wordCleaned]).map(contextIndeces => wordCount += contextIndeces.length);
+
+    // Replace the word with its appropriate replacement
     Object.values(word[wordCleaned])
       .map((contextIndeces, replacementIndex) =>
         wordList.push(
@@ -36,10 +38,10 @@ const WordsWithContext = (props: WordsWithContextProps) => {
               {wordCleaned.length > maxWordLength
                 ? <Tooltip title={wordCleaned}>
                   <div>
-                    {`${wordCleaned.substr(0, maxWordLength)}...(${contextIndecesCollection.length})`}
+                    {`${wordCleaned.substr(0, maxWordLength)}...(${wordCount})`}
                   </div>
                 </Tooltip>
-                : <div>{`${wordCleaned}...(${contextIndecesCollection.length})`}</div>
+                : <div>{`${wordCleaned}...(${wordCount})`}</div>
               }
             </Grid>
             <Grid item xs={5}>
