@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Tooltip, Button } from '@material-ui/core';
+import { Grid, Tooltip, Button, TextField } from '@material-ui/core';
 import { Word } from './models';
 import Context from './context';
 import styles from './properNounReplace.module.scss'
@@ -34,6 +34,7 @@ const WordsWithContext = (props: WordsWithContextProps) => {
       .map((contextIndeces, replacementIndex) =>
         wordList.push(
           <Grid container key={`Key${word}${wordIndex}`} className={styles.wordMargin}>
+            {/* THE WORD AND ITS COUNT */}
             <Grid item xs={3}>
               {wordCleaned.length > maxWordLength
                 ? <Tooltip title={wordCleaned}>
@@ -44,6 +45,7 @@ const WordsWithContext = (props: WordsWithContextProps) => {
                 : <div>{`${wordCleaned}...(${wordCount})`}</div>
               }
             </Grid>
+            {/* CONTEXT STRINGS */}
             <Grid item xs={5}>
               <Context
                 replacementWord={replacementIndex === 0 ? Object.keys(word)[0] : Object.keys(word[wordCleaned])[replacementIndex]}
@@ -52,6 +54,7 @@ const WordsWithContext = (props: WordsWithContextProps) => {
               />
             </Grid>
             <Grid item xs={1}></Grid>
+            {/* INCLUDE/EXCLUDE BUTTON */}
             <Grid item xs={3}>
               <Button
                 fullWidth
