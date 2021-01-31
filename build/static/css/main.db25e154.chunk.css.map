@@ -1,1 +1,0 @@
-{"version":3,"sources":["properNounReplace.module.scss"],"names":[],"mappings":"AAAA,oCACE,oBAAqB,CACtB,qCAGC,kBAAmB","file":"main.db25e154.chunk.css","sourcesContent":[".wordBreak {\r\n  word-break: break-all;\r\n}\r\n\r\n.wordMargin {\r\n  margin-bottom: 20px;\r\n}"]}
